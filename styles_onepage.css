@@ -988,3 +988,558 @@ img {
 .page-section:first-of-type{
   border-top: none;
 }
+
+
+/* =========================================================
+   RESPONSIVE FIXES
+   Mobile/tablet layout only — desktop design is unchanged.
+   ========================================================= */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.container {
+  width: 100%;
+}
+
+.hero__text,
+.services__left,
+.benefit,
+.footer__contacts {
+  min-width: 0;
+}
+
+.hero__text h1,
+.hero__lead,
+.checklist li,
+.benefit h3,
+.benefit p {
+  overflow-wrap: anywhere;
+}
+
+.hero__girl {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Tablet */
+@media (max-width: 980px) {
+  .header__row {
+    height: 78px;
+    padding: 8px 0;
+    gap: 8px;
+  }
+
+  .brand {
+    flex: 0 0 auto;
+  }
+
+  .brand__logo {
+    height: 64px;
+    width: auto;
+    max-width: 90px;
+    object-fit: contain;
+  }
+
+  .top-contacts__item {
+    font-size: 13px;
+    gap: 5px;
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
+
+  .header > .container > .btn {
+    min-width: 0;
+    padding: 9px 11px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .hero {
+    height: auto;
+    min-height: 0;
+  }
+
+  .hero__grid {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding: 34px 0 44px;
+  }
+
+  .hero__text {
+    width: 100%;
+  }
+
+  .hero__text h1 {
+    font-size: clamp(28px, 5vw, 44px);
+  }
+
+  .hero__visual {
+    min-height: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero__girl {
+    width: min(360px, 82vw);
+    max-height: 430px;
+    object-fit: contain;
+  }
+
+  .services__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .services__right {
+    min-width: 0;
+  }
+
+  .service-shot {
+    min-width: 0;
+  }
+
+  .service-shot img {
+    min-width: 0;
+  }
+
+  .faq__photo {
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .footer__row {
+    grid-template-columns: 1fr;
+  }
+
+  .footer__contacts {
+    justify-self: start;
+    width: 100%;
+    max-width: none;
+  }
+
+  .footer__bottom-row {
+    align-items: flex-start;
+  }
+}
+
+/* Phones */
+@media (max-width: 560px) {
+  .container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .header__row {
+    min-height: 70px;
+    height: auto;
+    padding: 6px 0;
+    flex-wrap: nowrap;
+  }
+
+  .brand__logo {
+    height: 56px;
+    max-width: 70px;
+  }
+
+  /* Keep all header controls on one line without changing their purpose. */
+  .header > .container > .top-contacts__item {
+    flex: 0 1 auto;
+    font-size: 12px;
+    padding: 7px 4px;
+  }
+
+  .header > .container > .top-contacts__item .ico {
+    font-size: 15px;
+  }
+
+  .header > .container > .btn {
+    flex: 0 0 auto;
+    padding: 8px 9px;
+    font-size: 12px;
+    gap: 5px;
+  }
+
+  .hero__grid {
+    gap: 18px;
+    padding: 28px 0 36px;
+  }
+
+  .hero__text h1 {
+    margin-bottom: 14px;
+    font-size: clamp(25px, 8vw, 34px);
+    line-height: 1.08;
+    letter-spacing: -.45px;
+  }
+
+  .hero__lead {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .hero__visual {
+    padding-top: 4px;
+  }
+
+  .hero__girl {
+    width: min(300px, 82vw);
+    max-height: 350px;
+  }
+
+  .hero__stripe {
+    height: 130px;
+    bottom: -30px;
+    border-top-width: 9px;
+  }
+
+  .section {
+    padding: 34px 0;
+  }
+
+  .section__title {
+    font-size: 24px;
+    line-height: 1.15;
+  }
+
+  .section__title--left {
+    text-align: left;
+  }
+
+  .benefits {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    max-width: none;
+  }
+
+  .benefit {
+    padding: 16px 14px;
+  }
+
+  .benefit h3 {
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .benefit p {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .services__grid {
+    gap: 26px;
+  }
+
+  .services__right {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .service-shot--tall,
+  .service-shot--circle {
+    width: min(100%, 320px);
+    justify-self: center;
+  }
+
+  .service-shot--tall {
+    height: auto;
+    aspect-ratio: 2 / 3;
+    border-radius: 90px;
+  }
+
+  .service-shot--circle {
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .service-shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .checklist {
+    gap: 9px;
+  }
+
+  .checklist li {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .tick {
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+  }
+
+  .btn--small,
+  .btn {
+    max-width: 100%;
+  }
+
+  .footer {
+    padding-top: 28px;
+  }
+
+  .footer__row {
+    gap: 22px;
+  }
+
+  .footer__contacts {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .footer__bottom-row {
+    flex-direction: column;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .footer__links {
+    width: 100%;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  /* Modal */
+  .modal__dialog {
+    width: calc(100% - 20px);
+    max-height: 90vh;
+    margin: 5vh auto 0;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .modal__actions,
+  .grid2,
+  .picker {
+    grid-template-columns: 1fr;
+  }
+
+  .pick {
+    min-height: 58px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .brand__logo {
+    height: 50px;
+    max-width: 62px;
+  }
+
+  .header > .container > .top-contacts__item {
+    font-size: 11px;
+  }
+
+  .header > .container > .btn {
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 11px;
+  }
+
+  .hero__text h1 {
+    font-size: 25px;
+  }
+
+  .hero__girl {
+    width: min(270px, 80vw);
+  }
+}
+
+/* =========================================================
+   MOBILE LAYOUT FINAL FIX
+   Only mobile/tablet layout is changed. Desktop stays intact.
+   ========================================================= */
+@media (max-width: 560px) {
+  /* Header: keep the original logo, just give it enough room. */
+  .header__row {
+    min-height: 76px;
+    height: 76px;
+    padding: 7px 0;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .brand {
+    flex: 0 0 94px;
+    width: 94px;
+    display: flex;
+    align-items: center;
+  }
+
+  .brand__logo {
+    width: 94px;
+    height: 62px;
+    max-width: none;
+    object-fit: contain;
+    display: block;
+  }
+
+  .header > .container > .top-contacts__item {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: center;
+    font-size: 12px;
+    gap: 4px;
+    padding: 8px 3px;
+    white-space: nowrap;
+  }
+
+  .header > .container > .top-contacts__item .ico {
+    font-size: 15px;
+  }
+
+  .header > .container > .btn {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 118px;
+    padding: 10px 12px;
+    font-size: 12px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* Hero: text stays on the left, transparent worker image is anchored
+     to the right edge instead of being centered underneath the text. */
+  .hero {
+    height: 600px;
+    min-height: 600px;
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    position: relative;
+    display: block;
+    min-height: 600px;
+    height: 600px;
+    padding: 42px 14px 0;
+  }
+
+  .hero__text {
+    position: relative;
+    z-index: 3;
+    width: 70%;
+    max-width: 310px;
+  }
+
+  .hero__text h1 {
+    margin: 0 0 14px;
+    font-size: clamp(25px, 7.6vw, 34px);
+    line-height: 1.06;
+    letter-spacing: -.5px;
+  }
+
+  .hero__lead {
+    max-width: 290px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .hero__text .btn {
+    max-width: 100%;
+    padding: 11px 14px;
+    font-size: 12px;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .hero__visual {
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    bottom: 0;
+    width: 57%;
+    height: 470px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  .hero__girl {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+    object-position: right bottom;
+    border: 0 !important;
+    box-shadow: none !important;
+    outline: 0 !important;
+  }
+
+  .hero__stripe {
+    z-index: 1;
+    height: 125px;
+    bottom: -28px;
+    border-top-width: 8px;
+  }
+
+  /* Give every mobile section consistent side breathing room. */
+  .section > .container,
+  .services__grid {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .section {
+    padding-top: 38px;
+    padding-bottom: 38px;
+  }
+
+  .section__title {
+    margin-bottom: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand {
+    flex-basis: 82px;
+    width: 82px;
+  }
+
+  .brand__logo {
+    width: 82px;
+    height: 58px;
+  }
+
+  .header > .container > .top-contacts__item {
+    font-size: 11px;
+  }
+
+  .header > .container > .btn {
+    min-width: 105px;
+    padding-left: 9px;
+    padding-right: 9px;
+    font-size: 11px;
+  }
+
+  .hero__text {
+    width: 72%;
+  }
+
+  .hero__visual {
+    width: 55%;
+    height: 430px;
+  }
+}
