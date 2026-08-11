@@ -460,18 +460,15 @@ img {
 }
 
 /* Benefits */
+/* Было: две колонки внутри max-width 600px — на десктопе карточки
+   жались в середину, а по краям пустовало почти по 400px.
+   auto-fit сам подбирает число колонок под ширину контейнера:
+   4 на десктопе, 2 на планшете, 1 на телефоне. */
 .benefits {
-  
-  /* display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px; */
-
-    display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-  justify-content: center;
-  max-width: 600px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+  align-items: stretch;
 }
 
 .benefit {
@@ -553,10 +550,11 @@ img {
 
 .service-shot {
   overflow: hidden;
-  background: rgba(255, 255, 255, .06);
-  /* было .08 */
-  border: 1px solid rgba(255, 255, 255, .14);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, .18);
+  /* Полупрозрачный белый фон и рамка достались от тёмной темы —
+     на персике они читались как блёклый ореол. */
+  background: rgba(255, 255, 255, .45);
+  border: 1px solid rgba(42, 29, 24, .08);
+  box-shadow: 0 14px 40px rgba(42, 29, 24, .14);
 }
 
 .service-shot img {
