@@ -14,7 +14,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles_onepage.css" />
   <link rel="icon" type="image/png" sizes="32x32" href="icon.png">
-  
+
+  <!-- Ставим класс до отрисовки body: иначе блоки успеют показаться
+       и только потом спрячутся под анимацию появления. Без JS класса
+       не будет и страница останется полностью видимой. -->
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 
 <body>
@@ -24,21 +28,25 @@
         <img class="brand__logo" src="./assets/logo1.png" alt="Recruiting Agency" />
       </a>
 
-      <a class="top-contacts__item" href="https://wa.me/77473604678" target="_blank" rel="noopener" title="WhatsApp">
-        <span class="ico" aria-hidden="true">💬</span>
-        <span>WhatsApp</span>
-      </a>
-
+      <!-- Оба контакта в одной группе: раньше WhatsApp был отдельным
+           элементом флекса и space-between растаскивал их по строке. -->
       <div class="top-contacts">
+        <a class="top-contacts__item" href="https://wa.me/77473604678" target="_blank" rel="noopener"
+          title="WhatsApp">
+          <span class="ico" aria-hidden="true">💬</span>
+          <span>WhatsApp</span>
+        </a>
+
         <a class="top-contacts__item" href="tel:+77473604678" title="Позвонить">
           <span class="ico" aria-hidden="true">📞</span>
-          <span>+7( 747 )360 46 78</span>
+          <span class="top-contacts__num">+7 747 360 46 78</span>
         </a>
       </div>
-      <a class="btn btn--ghost btn--xl" href="#contact">
+
+      <a class="btn btn--ghost header__cta" href="#contact">
         <span class="btn__icon" aria-hidden="true">📞</span> Контакты
       </a>
-
+    </div>
   </header>
 
   <!-- Recruiting -->
@@ -48,7 +56,7 @@
 
       <div class="container hero__grid">
         <div class="hero__text">
-          <h1>Услуги поиска и подбора персонала<br />Аутстафинг(предоставление наёмного персонала)<br />в Алматы</h1>
+          <h1>Услуги поиска и подбора персонала<br />Аутстафинг (предоставление наёмного персонала)<br />в Алматы</h1>
           <p class="hero__lead">
             Ваш надежный партнер по подбору персонала и аутсорсингу услуг.
             Закрываем кадровые и операционные задачи в формате «одного окна» — быстро, профессионально и без лишних
@@ -230,7 +238,7 @@
 
   <!-- Prom -->
 
-  <section class="page-section" id="cleaning">
+  <section class="page-section" id="industrial">
     <div class="hero">
       <div class="hero__stripe" aria-hidden="true"></div>
 
@@ -242,7 +250,7 @@
             Работаем быстро, качественно и в срок.
           </p>
 
-          <a class="btn btn--ghost" href="#cleaning-services"><span class="btn__icon" aria-hidden="true">🧹</span>
+          <a class="btn btn--ghost" href="#industrial-services"><span class="btn__icon" aria-hidden="true">🧹</span>
             Заказать
             мойку/промышленный ремонт
           </a>
@@ -255,7 +263,7 @@
       </div>
     </div>
 
-    <section class="section section--white" id="cleaning-benefits">
+    <section class="section section--white" id="industrial-benefits">
       <div class="container">
         <h2 class="section__title">Почему выбирают нас</h2>
 
@@ -283,7 +291,7 @@
       </div>
     </section>
 
-    <section class="section section--green" id="cleaning-services">
+    <section class="section section--green" id="industrial-services">
       <div class="container services__grid">
         <div class="services__left">
           <h2 class="section__title section__title--left">Что мы моем:</h2>
@@ -322,7 +330,7 @@
 
   <!-- Rem -->
 
-  <section class="page-section" id="cleaning">
+  <section class="page-section" id="renovation">
     <div class="hero">
       <div class="hero__stripe" aria-hidden="true"></div>
 
@@ -333,7 +341,7 @@
             Быстро, аккуратно и качественно — обновим ваш дом или офис или коммерческое помещение.
           </p>
 
-          <a class="btn btn--ghost" href="#cleaning-services"><span class="btn__icon" aria-hidden="true">🧹</span>
+          <a class="btn btn--ghost" href="#renovation-services"><span class="btn__icon" aria-hidden="true">🧹</span>
             Заказать
             косметический ремонт
           </a>
@@ -346,7 +354,7 @@
       </div>
     </div>
 
-    <section class="section section--white" id="cleaning-benefits">
+    <section class="section section--white" id="renovation-benefits">
       <div class="container">
         <h2 class="section__title">Почему выбирают нас</h2>
 
@@ -374,7 +382,7 @@
       </div>
     </section>
 
-    <section class="section section--green" id="cleaning-services">
+    <section class="section section--green" id="renovation-services">
       <div class="container services__grid">
         <div class="services__left">
           <h2 class="section__title section__title--left">Услуги косметического ремонта:</h2>
@@ -797,7 +805,7 @@
   <!-- Security -->
 
     <!-- Benefits -->
-    <section class="section section--white" id="loaders-benefits">
+    <section class="section section--white" id="partners">
       <div class="container">
         <h2 class="section__title">Наши партнеры</h2>
 
