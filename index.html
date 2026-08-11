@@ -28,18 +28,22 @@
         <img class="brand__logo" src="./assets/logo1.png" alt="Recruiting Agency" />
       </a>
 
-      <a class="top-contacts__item" href="https://wa.me/77473604678" target="_blank" rel="noopener" title="WhatsApp">
-        <span class="ico" aria-hidden="true">💬</span>
-        <span>WhatsApp</span>
-      </a>
-
+      <!-- Оба контакта в одной группе: раньше WhatsApp был отдельным
+           элементом флекса и space-between растаскивал их по строке. -->
       <div class="top-contacts">
+        <a class="top-contacts__item" href="https://wa.me/77473604678" target="_blank" rel="noopener"
+          title="WhatsApp">
+          <span class="ico" aria-hidden="true">💬</span>
+          <span>WhatsApp</span>
+        </a>
+
         <a class="top-contacts__item" href="tel:+77473604678" title="Позвонить">
           <span class="ico" aria-hidden="true">📞</span>
-          <span>+7( 747 )360 46 78</span>
+          <span class="top-contacts__num">+7 747 360 46 78</span>
         </a>
       </div>
-      <a class="btn btn--ghost btn--xl" href="#contact">
+
+      <a class="btn btn--ghost header__cta" href="#contact">
         <span class="btn__icon" aria-hidden="true">📞</span> Контакты
       </a>
     </div>

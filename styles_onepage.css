@@ -50,6 +50,30 @@ body:not(.page-security) {
   --ease: cubic-bezier(.2, .7, .3, 1);
   --dur: .2s;
   --dur-reveal: .4s;
+
+  /* Типографическая шкала. Шаг ~1.25.
+     Значения текучие, поэтому размеры не нужно переопределять
+     в медиазапросах — раньше один только h1 задавался пять раз
+     с конфликтующими clamp(). Слева значение на 390px, справа на 1440px. */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-base: 16px;
+  --fs-md: clamp(16px, .3vw + 14.9px, 18px);
+  --fs-lg: clamp(18px, .6vw + 16px, 22px);
+  --fs-xl: clamp(24px, 1.6vw + 17.6px, 32px);
+  /* заголовки секций: 24 -> 32 */
+  --fs-2xl: clamp(30px, 3.4vw + 14.4px, 52px);
+  /* заголовки hero: 30 -> 52 */
+
+  --lh-tight: 1.12;
+  --lh-snug: 1.3;
+  --lh-base: 1.55;
+
+  /* Высота холста логотипа. Видимая надпись — 27% от неё,
+     то есть 170px даёт логотип ~46px. Единственное место,
+     где задаётся размер: раньше .brand__logo переопределялся
+     шесть раз и последний вариант сплющивал квадрат в 94x62. */
+  --logo-h: 170px;
 }
 
 
@@ -64,7 +88,16 @@ html {
 body {
   margin: 0;
   font-family: "Manrope", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
   color: var(--text);
+}
+
+h1,
+h2,
+h3 {
+  line-height: var(--lh-tight);
+  text-wrap: balance;
 }
 
 a {
@@ -90,42 +123,67 @@ img {
   z-index: 50;
   background-color: var(--brown);
   border-bottom: 1px solid rgba(255, 255, 255, .10);
-  /* Логотип — квадрат 1024x1024, где сама надпись занимает лишь 27%
-     высоты, остальное прозрачные поля. При height:210px картинка
-     свисала на 59px ниже шапки и её ссылка перехватывала клики
-     по hero. Обрезаем: видимая часть логотипа при этом не страдает. */
+}
+
+/* Логотип слева, контакты и кнопка — единой группой справа.
+   Раньше здесь был space-between с четырьмя разными элементами,
+   и он растаскивал их по строке неравными промежутками. */
+.header__row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 0;
+  height: 76px;
+}
+
+/* Кадрируем логотип по границам самой надписи.
+   В файле она занимает прямоугольник 95..905 x 346..625 внутри
+   холста 1024x1024 — остальное прозрачно. Без этой обрезки
+   элемент занимал бы всю ширину квадрата и распирал шапку. */
+.brand {
+  position: relative;
+  flex: 0 0 auto;
+  margin-right: auto;
+  width: calc(var(--logo-h) * .791);
+  height: calc(var(--logo-h) * .2725);
   overflow: hidden;
 }
 
-.header__row {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 14px 0;
-  height: 90px;
+.brand:focus-visible {
+  outline: 3px solid #fff;
+  /* внутрь, иначе обрезка съест кольцо фокуса */
+  outline-offset: -3px;
 }
 
+.header__cta {
+  flex: 0 0 auto;
+  padding: 11px 20px;
+}
+
+/* Размер только через --logo-h. Смещение равно отступу надписи
+   от края холста: 346/1024 сверху и 95/1024 слева. */
 .brand__logo {
-  height: 210px;
-  width: auto;
-  box-sizing: border-box;
+  position: absolute;
+  top: calc(var(--logo-h) * -.338);
+  left: calc(var(--logo-h) * -.0928);
+  height: var(--logo-h);
+  width: var(--logo-h);
+  max-width: none;
 }
 
 .top-contacts {
   display: flex;
   align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 22px;
+  flex-wrap: nowrap;
 }
 
 .top-contacts__item {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-weight: 800;
+  white-space: nowrap;
   opacity: .95;
 }
 
@@ -325,18 +383,19 @@ img {
 }
 
 .hero__text h1 {
-  margin: 0 0 12px;
-  font-size: clamp(28px, 3.8vw, 48px);
-  line-height: 1.05;
-  letter-spacing: -.8px;
+  margin: 0 0 16px;
+  font-size: var(--fs-2xl);
+  line-height: var(--lh-tight);
+  letter-spacing: -.02em;
 }
 
 .hero__lead {
-  margin: 0 0 18px;
-  max-width: 560px;
+  margin: 0 0 24px;
+  max-width: 58ch;
   font-weight: 650;
   color: var(--ink-soft);
-  font-size: 16px;
+  font-size: var(--fs-md);
+  line-height: var(--lh-base);
 }
 
 .hero__visual {
@@ -442,10 +501,11 @@ img {
 }
 
 .section__title {
-  margin: 0 0 18px;
+  margin: 0 0 28px;
   text-align: center;
-  font-size: clamp(22px, 2.4vw, 30px);
-  letter-spacing: -.3px;
+  font-size: var(--fs-xl);
+  line-height: var(--lh-tight);
+  letter-spacing: -.015em;
 }
 
 
@@ -492,15 +552,18 @@ img {
 }
 
 .benefit h3 {
-  margin: 0 0 8px;
-  font-size: 16px;
-  letter-spacing: -.2px
+  margin: 0 0 10px;
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+  letter-spacing: -.01em;
 }
 
 .benefit p {
   margin: 0;
   color: var(--muted);
-  font-weight: 650
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  font-weight: 650;
 }
 
 /* Services section layout */
@@ -530,8 +593,9 @@ img {
   display: flex;
   gap: 10px;
   align-items: flex-start;
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
   font-weight: 750;
-  opacity: .95;
 }
 
 .tick {
@@ -842,8 +906,15 @@ img {
 }
 
 @media (max-width: 980px) {
+  /* Не прячем группу целиком: WhatsApp должен остаться видимым.
+     Сворачиваем только сам номер — ссылка tel: живёт в иконке. */
   .top-contacts {
-    display: none
+    display: flex;
+    gap: 14px;
+  }
+
+  .top-contacts__num {
+    display: none;
   }
 
   .nav {
@@ -1096,21 +1167,20 @@ body {
 /* Tablet */
 @media (max-width: 980px) {
   .header__row {
-    height: 78px;
+    height: 72px;
     padding: 8px 0;
-    gap: 8px;
+    gap: 12px;
   }
 
   .brand {
     flex: 0 0 auto;
   }
 
-  .brand__logo {
-    height: 64px;
-    width: auto;
-    max-width: 90px;
-    object-fit: contain;
+  /* 140px холста -> надпись ~38px */
+  :root {
+    --logo-h: 140px;
   }
+
 
   .top-contacts__item {
     font-size: 13px;
@@ -1119,7 +1189,7 @@ body {
     white-space: nowrap;
   }
 
-  .header > .container > .btn {
+  .header .header__cta {
     min-width: 0;
     padding: 9px 11px;
     font-size: 13px;
@@ -1143,7 +1213,6 @@ body {
   }
 
   .hero__text h1 {
-    font-size: clamp(28px, 5vw, 44px);
   }
 
   .hero__visual {
@@ -1210,23 +1279,19 @@ body {
     flex-wrap: nowrap;
   }
 
-  .brand__logo {
-    height: 56px;
-    max-width: 70px;
-  }
 
   /* Keep all header controls on one line without changing their purpose. */
-  .header > .container > .top-contacts__item {
+  .header .top-contacts__item {
     flex: 0 1 auto;
     font-size: 12px;
     padding: 7px 4px;
   }
 
-  .header > .container > .top-contacts__item .ico {
+  .header .top-contacts__item .ico {
     font-size: 15px;
   }
 
-  .header > .container > .btn {
+  .header .header__cta {
     flex: 0 0 auto;
     padding: 8px 9px;
     font-size: 12px;
@@ -1240,13 +1305,11 @@ body {
 
   .hero__text h1 {
     margin-bottom: 14px;
-    font-size: clamp(25px, 8vw, 34px);
     line-height: 1.08;
     letter-spacing: -.45px;
   }
 
   .hero__lead {
-    font-size: 15px;
     line-height: 1.5;
   }
 
@@ -1270,7 +1333,6 @@ body {
   }
 
   .section__title {
-    font-size: 24px;
     line-height: 1.15;
   }
 
@@ -1289,12 +1351,10 @@ body {
   }
 
   .benefit h3 {
-    font-size: 16px;
     line-height: 1.25;
   }
 
   .benefit p {
-    font-size: 14px;
     line-height: 1.45;
   }
 
@@ -1337,7 +1397,6 @@ body {
   }
 
   .checklist li {
-    font-size: 14px;
     line-height: 1.4;
   }
 
@@ -1404,23 +1463,18 @@ body {
     padding-right: 12px;
   }
 
-  .brand__logo {
-    height: 50px;
-    max-width: 62px;
-  }
 
-  .header > .container > .top-contacts__item {
+  .header .top-contacts__item {
     font-size: 11px;
   }
 
-  .header > .container > .btn {
+  .header .header__cta {
     padding-left: 7px;
     padding-right: 7px;
     font-size: 11px;
   }
 
   .hero__text h1 {
-    font-size: 25px;
   }
 
   .hero__girl {
@@ -1442,22 +1496,8 @@ body {
     align-items: center;
   }
 
-  .brand {
-    flex: 0 0 94px;
-    width: 94px;
-    display: flex;
-    align-items: center;
-  }
 
-  .brand__logo {
-    width: 94px;
-    height: 62px;
-    max-width: none;
-    object-fit: contain;
-    display: block;
-  }
-
-  .header > .container > .top-contacts__item {
+  .header .top-contacts__item {
     flex: 1 1 auto;
     min-width: 0;
     justify-content: center;
@@ -1467,11 +1507,11 @@ body {
     white-space: nowrap;
   }
 
-  .header > .container > .top-contacts__item .ico {
+  .header .top-contacts__item .ico {
     font-size: 15px;
   }
 
-  .header > .container > .btn {
+  .header .header__cta {
     flex: 0 0 auto;
     width: auto;
     min-width: 118px;
@@ -1509,7 +1549,6 @@ body {
 
   .hero__text h1 {
     margin: 0 0 14px;
-    font-size: clamp(25px, 7.6vw, 34px);
     line-height: 1.06;
     letter-spacing: -.5px;
   }
@@ -1517,7 +1556,6 @@ body {
   .hero__lead {
     max-width: none;
     margin-bottom: 18px;
-    font-size: 15px;
     line-height: 1.5;
   }
 
@@ -1581,21 +1619,16 @@ body {
 }
 
 @media (max-width: 380px) {
-  .brand {
-    flex-basis: 82px;
-    width: 82px;
+  /* 110px холста -> надпись ~30px */
+  :root {
+    --logo-h: 110px;
   }
 
-  .brand__logo {
-    width: 82px;
-    height: 58px;
-  }
-
-  .header > .container > .top-contacts__item {
+  .header .top-contacts__item {
     font-size: 11px;
   }
 
-  .header > .container > .btn {
+  .header .header__cta {
     min-width: 105px;
     padding-left: 9px;
     padding-right: 9px;
