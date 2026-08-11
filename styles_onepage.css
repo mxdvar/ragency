@@ -5,24 +5,51 @@ body:not(.page-security) {
 
 
 :root {
-  --bg: #ffffff;
-  --text: #0e1f1a;
-  --muted: #5c6b67;
+  /* Палитра. Пары «фон → текст» подобраны по контрасту WCAG AA (мин. 4.5:1). */
+  --peach: #ffdacc;
+  /* фон hero и services */
+  --peach-deep: #f7c3ae;
+  /* граница/разделитель на персике */
+  --ink: #2a1d18;
+  /* основной текст на персике и белом — 12.55:1 / 16.31:1 */
+  --ink-soft: #5d4a42;
+  /* lead и подписи на персике — 6.4:1 */
+  --ink-muted: #5d6b67;
+  /* подписи на белых карточках — 5.58:1 */
+  --accent: #a83a18;
+  /* галочки, ссылки, hover — 4.92:1 на персике */
+  --accent-dark: #8f3011;
+  --sun: #ffcf0d;
+  /* заливка кнопок */
+  --sun-ink: #1f1a07;
+  /* текст на кнопке — 11.73:1 */
+  --dark: #282b2b;
+  /* тёмные секции, тут белый текст уместен */
+  --brown: #7a5142;
+  /* хедер, футер, выпадающее меню — белый текст 6.81:1
+     (было #b48c7d — всего 3.01:1) */
 
-  /*--green:#0a5a3e;      /* основной зеленый как на примере */  
-  /* #ffdacc */
-  --green: #ffdacc;
-  --green2: #064330;
-  /* более тёмный */
-  --yellow: #282b2b;
-  /* акцент */
-  --yellow2: #ffcf0d;
+  --bg: #ffffff;
+  --text: var(--ink);
+  --muted: var(--ink-muted);
+
+  /* Legacy-псевдонимы: старые имена не совпадали со значениями
+     (--green был персиковым, --yellow почти чёрным). */
+  --green: var(--peach);
+  --green2: var(--peach-deep);
+  --yellow: var(--dark);
+  --yellow2: var(--sun);
 
   --card: #ffffff;
   --line: rgba(13, 34, 27, .10);
   --shadow: 0 14px 40px rgba(0, 0, 0, .12);
   --radius: 18px;
   --container: 1180px;
+
+  /* Движение: сдержанное и быстрое */
+  --ease: cubic-bezier(.2, .7, .3, 1);
+  --dur: .2s;
+  --dur-reveal: .4s;
 }
 
 
@@ -61,7 +88,7 @@ img {
   position: sticky;
   top: 0;
   z-index: 50;
-  background-color: #b48c7d;
+  background-color: var(--brown);
   border-bottom: 1px solid rgba(255, 255, 255, .10);
 }
 
@@ -197,24 +224,46 @@ img {
   font-weight: 950;
   cursor: pointer;
   user-select: none;
-  transition: transform .12s ease, filter .12s ease, background .12s ease;
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background var(--dur) var(--ease);
 }
 
 .btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.02)
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(168, 58, 24, .22);
+}
+
+/* Нажатие возвращает кнопку на место — короче, чем hover, чтобы отклик читался как клик. */
+.btn:active {
+  transform: translateY(0);
+  transition-duration: .08s;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .btn--yellow {
-  background: linear-gradient(180deg, var(--yellow), var(--yellow2));
-  color: #1f1a07;
+  background: linear-gradient(180deg, var(--sun), #f3c200);
+  color: var(--sun-ink);
   box-shadow: 0 14px 30px rgba(243, 194, 0, 0.4);
 }
 
+.btn--yellow:hover {
+  box-shadow: 0 18px 34px rgba(243, 194, 0, .5);
+}
+
 .btn--ghost {
-  background: rgba(250, 214, 11, 0.651);
-  color: #fff;
-  border: 1px solid #ffcf0dc5(255, 255, 255, .18);
+  background: var(--sun);
+  color: var(--sun-ink);
+  border: 1px solid rgba(31, 26, 7, .18);
+}
+
+.btn--ghost:hover {
+  background: #ffd93a;
 }
 
 .btn--small {
@@ -235,23 +284,26 @@ img {
 /* Hero */
 .hero {
   position: relative;
-  height: 633px;
-  background: var(--green);
-  color: rgb(255, 255, 255);
+  /* Было height: 633px — контент не помещался и наезжал на фото.
+     min-height позволяет блоку расти под текст. */
+  min-height: clamp(520px, 70vh, 660px);
+  background: var(--peach);
+  color: var(--ink);
   overflow: hidden;
 }
 
+/* Диагональ-разделитель. Держится у самого низа секции и лежит под контентом,
+   чтобы не перечёркивать кнопки и фото. */
 .hero__stripe {
   position: absolute;
   left: -10%;
   right: -10%;
-  bottom: -40px;
+  bottom: -120px;
   height: 210px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
   transform: rotate(-6deg);
   border-top: 14px solid #fff;
-  border-bottom: 0;
-  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .hero__grid {
@@ -278,12 +330,13 @@ img {
   margin: 0 0 18px;
   max-width: 560px;
   font-weight: 650;
-  opacity: .92;
+  color: var(--ink-soft);
   font-size: 16px;
 }
 
 .hero__visual {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
@@ -402,8 +455,8 @@ img {
 }
 
 .section--green {
-  background: var(--green);
-  color: #fff
+  background: var(--peach);
+  color: var(--ink)
 }
 
 /* Benefits */
@@ -485,9 +538,9 @@ img {
   display: grid;
   place-items: center;
   border-radius: 999px;
-  background: rgba(243, 196, 0, .18);
-  border: 1px solid rgba(243, 196, 0, .35);
-  color: #fff;
+  background: var(--sun);
+  border: 1px solid rgba(31, 26, 7, .2);
+  color: var(--sun-ink);
   flex: 0 0 auto;
   margin-top: 1px;
 }
@@ -519,7 +572,9 @@ img {
 
 .service-shot--circle {
   border-radius: 999px;
-  height: 210px
+  /* aspect-ratio вместо фиксированной высоты — иначе круг сплющивался в овал */
+  aspect-ratio: 1;
+  height: auto;
 }
 
 .service-shot--wide {
@@ -563,7 +618,7 @@ img {
 /* Footer */
 .footer {
   /* background: #b176761f; */
-    background: #b48c7d;
+    background: var(--brown);
   color: #fff;
   padding: 34px 0 0;
   
@@ -915,7 +970,7 @@ img {
   min-width: 260px;
   padding: 10px 8px;
 
-  background: #b48c7d;
+  background: var(--brown);
   border-radius: 16px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
 
@@ -976,7 +1031,8 @@ img {
 /* ===== SECURITY PAGE ===== */
 
 .page-security {
-  background: var();
+  /* было background: var() — пустой var() невалиден, правило отбрасывалось */
+  background: var(--dark);
   color: #fff;
 }
 
@@ -1017,12 +1073,15 @@ body {
   min-width: 0;
 }
 
+/* anywhere рвал слова посреди («предоставле/ние») — это был костыль против
+   переполнения от фиксированной высоты hero. Высоту убрали, поэтому здесь
+   достаточно переноса только по-настоящему длинных слов. */
 .hero__text h1,
 .hero__lead,
 .checklist li,
 .benefit h3,
 .benefit p {
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .hero__girl {
@@ -1419,27 +1478,30 @@ body {
     white-space: nowrap;
   }
 
-  /* Hero: text stays on the left, transparent worker image is anchored
-     to the right edge instead of being centered underneath the text. */
+  /* Hero: обычная вертикальная стопка — текст, кнопка, потом фото.
+     Раньше текст занимал 70% ширины, а фото было absolute на 57% — в сумме
+     127%, поэтому lead налезал на фотографию и обрезался. */
   .hero {
-    height: 600px;
-    min-height: 600px;
+    height: auto;
+    min-height: 0;
     overflow: hidden;
   }
 
   .hero__grid {
     position: relative;
-    display: block;
-    min-height: 600px;
-    height: 600px;
-    padding: 42px 14px 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    min-height: 0;
+    height: auto;
+    padding: 36px 14px 0;
   }
 
   .hero__text {
     position: relative;
     z-index: 3;
-    width: 70%;
-    max-width: 310px;
+    width: 100%;
+    max-width: none;
   }
 
   .hero__text h1 {
@@ -1450,44 +1512,42 @@ body {
   }
 
   .hero__lead {
-    max-width: 290px;
+    max-width: none;
     margin-bottom: 18px;
-    font-size: 14px;
-    line-height: 1.45;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .hero__text .btn {
     max-width: 100%;
-    padding: 11px 14px;
-    font-size: 12px;
+    padding: 13px 18px;
+    font-size: 14px;
     line-height: 1.25;
     text-align: center;
   }
 
   .hero__visual {
-    position: absolute;
+    position: relative;
     z-index: 2;
-    right: 0;
-    bottom: 0;
-    width: 57%;
-    height: 470px;
+    width: 100%;
+    height: auto;
     min-height: 0;
     margin: 0;
     padding: 0;
     display: flex;
     align-items: flex-end;
-    justify-content: flex-end;
+    justify-content: center;
     pointer-events: none;
   }
 
   .hero__girl {
     display: block;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    max-height: none;
+    width: min(320px, 78vw);
+    height: auto;
+    max-width: 100%;
+    max-height: 380px;
     object-fit: contain;
-    object-position: right bottom;
+    object-position: center bottom;
     border: 0 !important;
     box-shadow: none !important;
     outline: 0 !important;
@@ -1539,12 +1599,128 @@ body {
     font-size: 11px;
   }
 
+  /* Здесь тоже была пара 72% + 55% — на узких экранах текст снова
+     наезжал на фото. Держим одну колонку. */
   .hero__text {
-    width: 72%;
+    width: 100%;
   }
 
   .hero__visual {
-    width: 55%;
-    height: 430px;
+    width: 100%;
+    height: auto;
+  }
+
+  .hero__girl {
+    width: min(280px, 78vw);
+    max-height: 330px;
+  }
+}
+
+/* =========================================================
+   ДВИЖЕНИЕ
+   Только transform и opacity — эти свойства не вызывают
+   пересчёт лэйаута, поэтому скролл остаётся плавным.
+   ========================================================= */
+
+/* Появление при скролле.
+   Прячем элементы только когда JS жив (класс js на <html> ставится
+   инлайн-скриптом до отрисовки body) — иначе при отключённом JS
+   страница осталась бы пустой, а так она просто статична. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--dur-reveal) var(--ease),
+    transform var(--dur-reveal) var(--ease);
+  /* Каскад внутри группы: каждый следующий элемент на 40мс позже */
+  transition-delay: calc(var(--reveal-i, 0) * 40ms);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Карточки преимуществ */
+.benefit {
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.benefit:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(42, 29, 24, .16);
+}
+
+/* Фото услуг: лёгкий зум внутри рамки, сама рамка не двигается */
+.service-shot img {
+  transition: transform .35s var(--ease);
+}
+
+.service-shot:hover img {
+  transform: scale(1.04);
+}
+
+/* Пункты чеклиста */
+.checklist li {
+  transition: transform var(--dur) var(--ease);
+}
+
+.checklist li:hover {
+  transform: translateX(3px);
+}
+
+.checklist li:hover .tick {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent-dark);
+}
+
+.tick {
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+
+/* Ссылки и контакты в шапке */
+.top-contacts__item,
+.footer__links a {
+  transition: opacity var(--dur) var(--ease);
+}
+
+/* Видимый фокус с клавиатуры — раньше его не было нигде */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.header a:focus-visible {
+  outline-color: #fff;
+}
+
+/* Уважаем системную настройку «меньше движения» */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
   }
 }

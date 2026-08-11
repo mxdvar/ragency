@@ -6,7 +6,7 @@
  * - phone validation + WhatsApp submission
  * - service-aware modal (shows cleaning fields only for "Клининг")
  */
-const WA_NUMBER = "77776463333"; // <-- поменяйте на ваш номер WhatsApp (без +)
+const WA_NUMBER = "77473604678"; // номер WhatsApp без + (совпадает с кнопками в разметке)
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -176,3 +176,93 @@ document.querySelectorAll('.faq details').forEach((d) => {
     document.querySelectorAll('.faq details').forEach((x) => { if (x !== d) x.open = false; });
   });
 });
+/* =========================================================
+   Появление блоков при скролле.
+   Класс js на <html> уже стоит (инлайн-скрипт в <head>),
+   поэтому здесь остаётся только пометить элементы и наблюдать.
+   ========================================================= */
+(function initReveal(){
+  // Группы: внутри каждой элементы появляются каскадом с задержкой 40мс.
+  const GROUPS = [
+    '.hero__text',
+    '.hero__visual',
+    '.section__title',
+    '.benefits > .benefit',
+    '.checklist > li',
+    '.services__left > .btn',
+    '.service-shot',
+  ];
+
+  const items = [];
+  GROUPS.forEach(sel => {
+    // Индекс считаем внутри родителя, чтобы каскад шёл по каждой группе
+    // отдельно, а не сквозной нумерацией через всю страницу.
+    const byParent = new Map();
+    document.querySelectorAll(sel).forEach(el => {
+      const key = el.parentElement;
+      const i = byParent.get(key) || 0;
+      byParent.set(key, i + 1);
+      el.classList.add('reveal');
+      el.style.setProperty('--reveal-i', String(Math.min(i, 6)));
+      items.push(el);
+    });
+  });
+
+  if (!items.length) return;
+
+  const pending = new Set(items);
+
+  function show(el){
+    el.classList.add('is-visible');
+    pending.delete(el);
+    if (io) io.unobserve(el); // анимация одноразовая
+    if (!pending.size) teardown();
+  }
+
+  // Без IntersectionObserver просто показываем всё сразу.
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) show(entry.target);
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+
+  items.forEach(el => io.observe(el));
+
+  /* Страховка. При быстрой прокрутке (рывок колесом, переход по якорю)
+     наблюдатель может не успеть отработать блок, пролетевший между
+     кадрами, и тот остался бы невидимым навсегда. Здесь добираем всё,
+     что уже вошло в зону видимости. Проверка идёт не чаще раза в кадр
+     и отключается, как только показывать больше нечего. */
+  let queued = false;
+
+  function sweep(){
+    queued = false;
+    if (!pending.size) return;
+    const limit = window.innerHeight;
+    [...pending].forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < limit && r.bottom > 0) show(el);
+      else if (r.bottom <= 0) show(el); // уже прокручен выше экрана
+    });
+  }
+
+  function onScroll(){
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(sweep);
+  }
+
+  function teardown(){
+    io.disconnect();
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+})();
